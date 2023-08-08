@@ -1,0 +1,51 @@
+[package]
+name = "alazar"
+description = "randomness"
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.64.0" ## in sync with ./check.sh & .github/workflows/check.yml
+authors = ["José Luis Cruz <joseluis@andamira.net>"]
+repository = "https://github.com/andamira/alazar"
+documentation = "https://docs.rs/alazar"
+license = "MIT OR Apache-2.0"
+include = [
+	"/src/**/*.rs",
+	"/Cargo.toml",
+	"/LICENSE-*",
+	"/README.md",
+]
+categories = []
+keywords = []
+publish = false
+
+
+[features]
+default = ["std"]
+
+std = ["alloc"]
+alloc = [] # allocating no-std (unused)
+no-std = [] # non-allocating no-std. incompatible with "std" (unused)
+
+safe = [] # disable unsafe in this crate
+safest = ["safe"] # disable unsafe in dependencies. (unused)
+unsafe = [] # enable unsafe alternatives. incompatible with "safe" (unused)
+
+nightly = [] # used only for better docs
+nightly_docs = ["nightly", "std"] # features to document
+
+
+[dependencies]
+
+
+[dev-dependencies]
+# rand = { version = "0.8.5", features = ["small_rng"] }
+# rand_xoshiro = "0.6.0"
+# depura = { version = "0.0.3", default-features = false }
+
+
+[package.metadata.docs.rs]
+no-default-features = true
+features = ["nightly_docs"]
+
+[badges]
+maintenance = { status = "experimental" }
