@@ -3,6 +3,8 @@
 //!
 //
 
+use devela::convert::{u16_into_u8_le, u32_into_u8_le};
+
 /// A simple 8-bit pseudo-random number generator with 32-bit of state,
 /// based on the XorShift algorithm.
 ///
@@ -28,9 +30,9 @@ pub struct Xyza8a {
 }
 
 impl Xyza8a {
-    /// Returns a seeded `Xyza8a` generator from the given 4 × 8-bit seed.
+    /// Returns a seeded `Xyza8a` generator from the given 4 × 8-bit seeds.
     #[inline]
-    pub const fn new4(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
+    pub const fn new(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
         Self {
             x: seed1,
             y: seed2,
@@ -39,7 +41,14 @@ impl Xyza8a {
         }
     }
 
-    /// Returns the next random `u8`.
+    /// Returns the current random `u8`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u8(&self) -> u8 {
+        self.a
+    }
+
+    /// Updates the state and returns the next random `u8`.
     #[inline]
     pub fn next_u8(&mut self) -> u8 {
         let t = self.x ^ (self.x << 4);
@@ -49,7 +58,52 @@ impl Xyza8a {
         self.a = self.z ^ t ^ (self.z >> 1) ^ (t << 1);
         self.a
     }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut new = *self;
+
+        let t = new.x ^ (new.x << 4);
+        new.x = new.y;
+        new.y = new.z;
+        new.z = new.a;
+        new.a = new.z ^ t ^ (new.z >> 1) ^ (t << 1);
+        new
+    }
 }
+
+/// # Extra constructors
+impl Xyza8a {
+    /// Returns a seeded `Xyza8a` generator from the given 32-bit seed.
+    ///
+    /// The seeds will be split in little endian order.
+    #[inline]
+    pub const fn new1_32(seed: u32) -> Self {
+        let [x, y, z, a] = u32_into_u8_le(seed);
+        Self::new4_8(x, y, z, a)
+    }
+
+    /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
+    ///
+    /// The seeds will be split in little endian order.
+    #[inline]
+    pub const fn new2_16(seed1: u16, seed2: u16) -> Self {
+        let [x, y] = u16_into_u8_le(seed1);
+        let [z, a] = u16_into_u8_le(seed2);
+        Self::new4_8(x, y, z, a)
+    }
+
+    /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
+    /// This is an alias of [`new`][Self#method.new].
+    #[inline(always)]
+    pub const fn new4_8(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
+        Self::new(seed1, seed2, seed3, seed4)
+    }
+}
+
+// -----------------------------------------------------------------------------
 
 /// A simple 8-bit pseudo-random number generator with 32-bit of state,
 /// based on the XorShift algorithm.
@@ -68,15 +122,22 @@ pub struct Xyza8b {
 }
 
 impl Xyza8b {
-    /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seed.
+    /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
+    /// This is the fastest constructor.
     #[inline]
-    pub const fn new4(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
+    pub const fn new(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
         Self {
             x: seed1,
             y: seed2,
             z: seed3,
             a: seed4,
         }
+    }
+
+    /// Returns the current random `u8`.
+    #[inline(always)]
+    pub const fn current_u8(&self) -> u8 {
+        self.a
     }
 
     /// Returns the next random `u8`.
@@ -88,5 +149,47 @@ impl Xyza8b {
         self.z = self.a;
         self.a = self.z ^ t ^ (self.z >> 3) ^ (t << 1);
         self.a
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    pub const fn next_new(&self) -> Self {
+        let mut new = *self;
+
+        let t = new.x ^ (new.x >> 1);
+        new.x = new.y;
+        new.y = new.z;
+        new.z = new.a;
+        new.a = new.z ^ t ^ (new.z >> 3) ^ (t << 1);
+        new
+    }
+}
+
+/// # Extra constructors
+impl Xyza8b {
+    /// Returns a seeded `Xyza8a` generator from the given 32-bit seed.
+    ///
+    /// The seeds will be split in little endian order.
+    #[inline]
+    pub const fn new1_32(seed: u32) -> Self {
+        let [x, y, z, a] = u32_into_u8_le(seed);
+        Self::new4_8(x, y, z, a)
+    }
+
+    /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
+    ///
+    /// The seeds will be split in little endian order.
+    #[inline]
+    pub const fn new2_16(seed1: u16, seed2: u16) -> Self {
+        let [x, y] = u16_into_u8_le(seed1);
+        let [z, a] = u16_into_u8_le(seed2);
+        Self::new4_8(x, y, z, a)
+    }
+
+    /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
+    /// This is an alias of [`new`][Self#method.new].
+    #[inline(always)]
+    pub const fn new4_8(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
+        Self::new(seed1, seed2, seed3, seed4)
     }
 }
