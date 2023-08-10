@@ -3,7 +3,7 @@ name = "alazar"
 description = "randomness"
 version = "0.0.1"
 edition = "2021"
-rust-version = "1.64.0" ## in sync with ./check.sh & .github/workflows/check.yml
+rust-version = "1.71.0" ## in sync with ./check.sh & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/alazar"
 documentation = "https://docs.rs/alazar"
@@ -28,7 +28,7 @@ alloc = [] # allocating no-std (unused)
 no-std = [] # non-allocating no-std. incompatible with "std" (unused)
 
 safe = [] # disable unsafe in this crate
-safest = ["safe"] # disable unsafe in dependencies. (unused)
+safest = ["safe", "devela/safe"] # disable unsafe in dependencies.
 unsafe = [] # enable unsafe alternatives. incompatible with "safe" (unused)
 
 nightly = [] # used only for better docs
@@ -36,6 +36,7 @@ nightly_docs = ["nightly", "std"] # features to document
 
 
 [dependencies]
+devela = { version = "0.6.1", default-features = false }
 
 
 [dev-dependencies]
