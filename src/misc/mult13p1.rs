@@ -23,7 +23,7 @@ impl Mult13P1 {
     /// Returns a seeded XorShift8 generator from the given 8-bit seed.
     #[inline]
     #[must_use]
-    pub fn new(seed: u8) -> Self {
+    pub const fn new(seed: u8) -> Self {
         Self { state: seed }
     }
 

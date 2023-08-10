@@ -30,7 +30,7 @@ pub struct Xyza8a {
 impl Xyza8a {
     /// Returns a seeded `Xyza8a` generator from the given 4 × 8-bit seed.
     #[inline]
-    pub fn new4(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
+    pub const fn new4(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
         Self {
             x: seed1,
             y: seed2,
@@ -70,7 +70,7 @@ pub struct Xyza8b {
 impl Xyza8b {
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seed.
     #[inline]
-    pub fn new4(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
+    pub const fn new4(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
         Self {
             x: seed1,
             y: seed2,

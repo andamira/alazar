@@ -33,7 +33,7 @@ impl XorShift8 {
     /// Returns `None` if seed == `0`.
     #[inline]
     #[must_use]
-    pub fn new(seed: u8) -> Option<Self> {
+    pub const fn new(seed: u8) -> Option<Self> {
         if seed == 0 {
             None
         } else {
@@ -69,7 +69,7 @@ impl XorShift16 {
     /// Returns `None` if seed == `0`.
     #[inline]
     #[must_use]
-    pub fn new(seed: u16) -> Option<Self> {
+    pub const fn new(seed: u16) -> Option<Self> {
         if seed == 0 {
             None
         } else {
@@ -106,7 +106,7 @@ impl XorShift32 {
     /// Returns `None` if seed == `0`.
     #[inline]
     #[must_use]
-    pub fn new(seed: u32) -> Option<Self> {
+    pub const fn new(seed: u32) -> Option<Self> {
         if seed == 0 {
             None
         } else {
@@ -175,7 +175,7 @@ impl XorShift128 {
     /// Returns a seeded XorShift128 generator from the given 2 × 64-bit seeds.
     #[inline]
     #[must_use]
-    pub fn new2(seed1: u64, seed2: u64) -> Option<Self> {
+    pub const fn new2(seed1: u64, seed2: u64) -> Option<Self> {
         if (seed1 | seed2) != 0 {
             let high1: u32 = (seed1 >> 32) as u32;
             let low1: u32 = (seed1 & u32::MAX as u64) as u32;
@@ -194,7 +194,7 @@ impl XorShift128 {
     /// Returns `None` if all given seeds are `0`.
     #[inline]
     #[must_use]
-    pub fn new4(seed1: u32, seed2: u32, seed3: u32, seed4: u32) -> Option<Self> {
+    pub const fn new4(seed1: u32, seed2: u32, seed3: u32, seed4: u32) -> Option<Self> {
         if (seed1 | seed2 | seed3 | seed4) != 0 {
             Some(Self([seed1, seed2, seed3, seed4]))
         } else {
@@ -233,7 +233,7 @@ impl XorShift128p {
     /// Returns `None` if the given seed is `0`.
     #[inline]
     #[must_use]
-    pub fn new(seed: u128) -> Option<Self> {
+    pub const fn new(seed: u128) -> Option<Self> {
         if seed != 0 {
             let high: u64 = (seed >> 64) as u64;
             let low: u64 = (seed & u64::MAX as u128) as u64;
@@ -249,7 +249,7 @@ impl XorShift128p {
     /// Returns `None` if all given seeds are `0`.
     #[inline]
     #[must_use]
-    pub fn new2(seed1: u64, seed2: u64) -> Option<Self> {
+    pub const fn new2(seed1: u64, seed2: u64) -> Option<Self> {
         if (seed1 | seed2) != 0 {
             Some(Self([seed1, seed2]))
         } else {
@@ -262,7 +262,7 @@ impl XorShift128p {
     /// Returns `None` if all given seeds are `0`.
     #[inline]
     #[must_use]
-    pub fn new4(seed1: u32, seed2: u32, seed3: u32, seed4: u32) -> Option<Self> {
+    pub const fn new4(seed1: u32, seed2: u32, seed3: u32, seed4: u32) -> Option<Self> {
         if (seed1 | seed2 | seed3 | seed4) != 0 {
             let high1: u64 = (seed2 as u64) << 32;
             let low1: u64 = seed1 as u64;

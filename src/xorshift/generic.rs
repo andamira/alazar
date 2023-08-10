@@ -15,7 +15,7 @@ impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3>
     /// # Panic
     /// Panics in debug if either `S1`, `S2` or `S3` are < 1 or > 7.
     #[inline]
-    pub fn new(seed: u8) -> Option<Self> {
+    pub const fn new(seed: u8) -> Option<Self> {
         debug_assert![S1 > 0 && S1 <= 7];
         debug_assert![S2 > 0 && S1 <= 7];
         debug_assert![S3 > 0 && S1 <= 7];
