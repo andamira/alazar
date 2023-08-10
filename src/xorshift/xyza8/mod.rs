@@ -15,7 +15,7 @@
 ///
 /// # License
 /// This algorithm was ported from [8bit_rng](https://github.com/edrosten/8bit_rng).
-/// Copyright (c) 2008--2013 Edward Rosten.
+/// Copyright (c) 2008-2013 Edward Rosten.
 /// Licensed under the [BSD 2-Clause "Simplified" License][license]
 ///
 /// [license]: https://github.com/edrosten/8bit_rng/blob/master/LICENSE
@@ -59,7 +59,6 @@ impl Xyza8a {
 /// random number tests.
 ///
 /// Its longest cycle is 4,294,967,294.
-///
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Xyza8b {
     x: u8,

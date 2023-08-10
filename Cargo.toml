@@ -10,6 +10,7 @@ documentation = "https://docs.rs/alazar"
 license = "MIT OR Apache-2.0"
 include = [
 	"/src/**/*.rs",
+	"/src/**/*.md",
 	"/Cargo.toml",
 	"/LICENSE-*",
 	"/README.md",
