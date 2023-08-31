@@ -28,6 +28,13 @@ impl XorShift16 {
         }
     }
 
+    /// Returns the current random `u16`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u16(&self) -> u16 {
+        self.0
+    }
+
     /// Returns the next random `u16`.
     ///
     #[inline]
@@ -39,6 +46,17 @@ impl XorShift16 {
         x ^= x << 8;
         self.0 = x;
         x
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut x = self.0;
+        x ^= x << 7;
+        x ^= x >> 9;
+        x ^= x << 8;
+        Self(x)
     }
 }
 

@@ -28,6 +28,13 @@ impl XorShift128 {
         }
     }
 
+    /// Returns the current random `u64`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u64(&self) -> u64 {
+        ((self.0[0] as u64) << 32) | (self.0[1] as u64)
+    }
+
     /// Returns the next random `u64`.
     #[inline]
     #[must_use]
@@ -41,6 +48,22 @@ impl XorShift128 {
         s ^= s >> 8;
         self.0[0] = s ^ t ^ (t >> 19);
         ((self.0[0] as u64) << 32) | (self.0[1] as u64)
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut x = self.0;
+        let t = x[3];
+        let mut s = x[0];
+        x[3] = x[2];
+        x[2] = x[1];
+        x[1] = s;
+        s ^= s << 11;
+        s ^= s >> 8;
+        x[0] = s ^ t ^ (t >> 19);
+        Self(x)
     }
 }
 
@@ -122,6 +145,13 @@ impl XorShift128p {
         }
     }
 
+    /// Returns the current random `u64`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u64(&self) -> u64 {
+        self.0[0] + self.0[1]
+    }
+
     /// Returns the next random `u64`.
     #[inline]
     #[must_use]
@@ -133,6 +163,19 @@ impl XorShift128p {
         self.0[0] = s0.rotate_left(24) ^ s1 ^ (s1 << 16); // a, b
         self.0[1] = s1.rotate_left(37); // c
         result
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut x = self.0;
+        let mut s1 = x[0];
+        let s0 = x[1];
+        s1 ^= s0;
+        x[0] = s0.rotate_left(24) ^ s1 ^ (s1 << 16); // a, b
+        x[1] = s1.rotate_left(37); // c
+        Self(x)
     }
 }
 

@@ -25,6 +25,13 @@ impl XorShift8 {
         }
     }
 
+    /// Returns the current random `u8`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u8(&self) -> u8 {
+        self.0
+    }
+
     /// Returns the next random `u8`.
     #[inline]
     #[must_use]
@@ -35,6 +42,17 @@ impl XorShift8 {
         x ^= x << 2;
         self.0 = x;
         x
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut x = self.0;
+        x ^= x << 3;
+        x ^= x >> 4;
+        x ^= x << 2;
+        Self(x)
     }
 }
 
@@ -62,6 +80,13 @@ impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3>
         }
     }
 
+    /// Returns the current random `u8`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u8(&self) -> u8 {
+        self.0
+    }
+
     /// Updates the state and returns the next random `u8`.
     ///
     #[inline]
@@ -72,5 +97,16 @@ impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3>
         x ^= x << S3;
         self.0 = x;
         x
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut x = self.0;
+        x ^= x << S1;
+        x ^= x >> S2;
+        x ^= x << S3;
+        Self(x)
     }
 }

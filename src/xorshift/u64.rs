@@ -3,7 +3,7 @@
 //! 64-bit versions of XorShift generators.
 //
 
-use devela::convert::{u64_from_u32_le, u64_from_u16_le, u64_from_u8_le};
+use devela::convert::{u64_from_u16_le, u64_from_u32_le, u64_from_u8_le};
 
 /// The `XorShift64` pseudo-random number generator.
 ///
@@ -28,6 +28,13 @@ impl XorShift64 {
         }
     }
 
+    /// Returns the current random `u64`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u16(&self) -> u64 {
+        self.0
+    }
+
     /// Returns the next random `u64`.
     #[inline]
     #[must_use]
@@ -38,6 +45,17 @@ impl XorShift64 {
         x ^= x << 17;
         self.0 = x;
         x
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut x = self.0;
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
+        Self(x)
     }
 }
 

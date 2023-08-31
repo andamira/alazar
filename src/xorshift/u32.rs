@@ -28,6 +28,13 @@ impl XorShift32 {
         }
     }
 
+    /// Returns the current random `u32`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u32(&self) -> u32 {
+        self.0
+    }
+
     /// Returns the next random `u32`.
     //
     // Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs"
@@ -41,7 +48,19 @@ impl XorShift32 {
         self.0 = x;
         x
     }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut x = self.0;
+        x ^= x << 13;
+        x ^= x >> 17;
+        x ^= x << 5;
+        Self(x)
+    }
 }
+
 /// # Extra constructors
 impl XorShift32 {
     /// Returns a seeded `XorShift32` generator from the given 32-bit seed.
