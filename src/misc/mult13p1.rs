@@ -27,6 +27,13 @@ impl Mult13P1 {
         Self { state: seed }
     }
 
+    /// Returns the current random `u8`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u8(&self) -> u8 {
+        self.state
+    }
+
     /// Returns the next random `u8`.
     #[inline]
     #[must_use]
@@ -37,5 +44,17 @@ impl Mult13P1 {
         // 13*n = n + n*2^2 + n*2^3
         self.state = n + n_times_2_pow_2 + n_times_2_pow_3 + 1;
         self.state
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let mut state = self.state;
+        let n_times_2_pow_2 = state << 2;
+        let n_times_2_pow_3 = state << 3;
+        // 13*n = n + n*2^2 + n*2^3
+        state += n_times_2_pow_2 + n_times_2_pow_3 + 1;
+        Self { state }
     }
 }
