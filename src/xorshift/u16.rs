@@ -3,6 +3,8 @@
 //! 16-bit versions of XorShift generators.
 //
 
+use devela::convert::u16_from_u8_le;
+
 /// The `XorShift16` pseudo-random number generator.
 ///
 /// It has a 16-bit state and generates 16-bit numbers.
@@ -37,5 +39,24 @@ impl XorShift16 {
         x ^= x << 8;
         self.0 = x;
         x
+    }
+}
+
+/// # Extra constructors
+impl XorShift16 {
+    /// Returns a seeded `XorShift16` generator from the given 16-bit seed.
+    ///
+    /// This is an alias of [`new`][Self#method.new].
+    #[inline]
+    pub const fn new1_16(seed: u16) -> Option<Self> {
+        Self::new(seed)
+    }
+
+    /// Returns a seeded `XorShift16` generator from the given 2 × 8-bit seeds.
+    ///
+    /// The seeds will be joined in little endian order.
+    #[inline]
+    pub const fn new2_8(seeds: [u8; 2]) -> Option<Self> {
+        Self::new(u16_from_u8_le(seeds))
     }
 }

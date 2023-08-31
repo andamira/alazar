@@ -3,6 +3,8 @@
 //! 32-bit versions of XorShift generators.
 //
 
+use devela::convert::{u32_from_u16_le, u32_from_u8_le};
+
 /// The `XorShift32` pseudo-random number generator.
 ///
 /// It has a 32-bit state and generates 32-bit numbers.
@@ -38,5 +40,31 @@ impl XorShift32 {
         x ^= x << 5;
         self.0 = x;
         x
+    }
+}
+/// # Extra constructors
+impl XorShift32 {
+    /// Returns a seeded `XorShift32` generator from the given 32-bit seed.
+    ///
+    /// This is an alias of [`new`][Self#method.new].
+    #[inline]
+    pub const fn new1_32(seed: u32) -> Option<Self> {
+        Self::new(seed)
+    }
+
+    /// Returns a seeded `XorShift32` generator from the given 2 × 16-bit seeds.
+    ///
+    /// The seeds will be joined in little endian order.
+    #[inline]
+    pub const fn new2_16(seeds: [u16; 2]) -> Option<Self> {
+        Self::new(u32_from_u16_le(seeds))
+    }
+
+    /// Returns a seeded `XorShift32` generator from the given 4 × 8-bit seeds.
+    ///
+    /// The seeds will be joined in little endian order.
+    #[inline]
+    pub const fn new4_8(seeds: [u8; 4]) -> Option<Self> {
+        Self::new(u32_from_u8_le(seeds))
     }
 }
