@@ -58,12 +58,7 @@ impl Xabc {
         let a = a ^ c ^ x;
         let b = b.wrapping_add(a);
         let c = c.wrapping_add(b >> 1) ^ a;
-        Self {
-            a,
-            b,
-            c,
-            x,
-        }
+        Self { a, b, c, x }
     }
 
     /// Reseeds the generator from the given 3 × 8-bit seeds.
@@ -80,6 +75,13 @@ impl Xabc {
         self.c = self.c.wrapping_add(self.b >> 1) ^ self.a;
     }
 
+    /// Returns the current random `u8`.
+    #[inline(always)]
+    #[must_use]
+    pub const fn current_u8(&self) -> u8 {
+        self.c
+    }
+
     /// Returns the next random `u8`.
     #[inline]
     #[must_use]
@@ -94,6 +96,18 @@ impl Xabc {
         // low order bits of other variables
         self.c = self.c.wrapping_add(self.b >> 1) ^ self.a;
         self.c
+    }
+
+    /// Returns a copy of the next new random state.
+    #[inline]
+    #[must_use]
+    pub const fn next_new(&self) -> Self {
+        let [mut a, mut b, mut c, mut x] = [self.a, self.b, self.c, self.x];
+        x += 1;
+        a = a ^ c ^ x;
+        b = b.wrapping_add(a);
+        c = c.wrapping_add(b >> 1) ^ a;
+        Self { a, b, c, x }
     }
 }
 
