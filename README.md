@@ -2,7 +2,7 @@
 
 [![Crate](https://img.shields.io/crates/v/alazar.svg)](https://crates.io/crates/alazar)
 [![API](https://docs.rs/alazar/badge.svg)](https://docs.rs/alazar/)
-[![MSRV: 1.64.0](https://flat.badgen.net/badge/MSRV/1.64.0/purple)](https://releases.rs/docs/1.64.0/)
+[![MSRV: 1.72.0](https://flat.badgen.net/badge/MSRV/1.72.0/purple)](https://releases.rs/docs/1.72.0/)
 
 Random number generation.
 

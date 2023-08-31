@@ -3,7 +3,7 @@ name = "alazar"
 description = "randomness"
 version = "0.0.1"
 edition = "2021"
-rust-version = "1.71.0" ## in sync with ./check.sh & .github/workflows/check.yml
+rust-version = "1.72.0" ## sync with readme, ./check.sh & .github/workflows/check.yml
 authors = ["José Luis Cruz <joseluis@andamira.net>"]
 repository = "https://github.com/andamira/alazar"
 documentation = "https://docs.rs/alazar"
@@ -15,35 +15,39 @@ include = [
 	"/LICENSE-*",
 	"/README.md",
 ]
-categories = []
+categories = ["no-std::no-alloc"]
 keywords = []
 publish = false
 
+# ------------------------------------------------------------------------------
 
 [features]
 default = ["std"]
 
-std = ["alloc"]
-alloc = [] # allocating no-std (unused)
-no-std = [] # non-allocating no-std. incompatible with "std" (unused)
+#* environment features *#
+# (not enabling "std" declares the library as "no_std")
+std = ["alloc"] # enables functionality that depend on the standard library
+alloc = [] # enables functionality that depend on allocation (unused)
+no_std = [] # enables functionality incompatible with the standard library (unused)
 
-safe = [] # disable unsafe in this crate
-safest = ["safe", "devela/safe"] # disable unsafe in dependencies.
-unsafe = [] # enable unsafe alternatives. incompatible with "safe" (unused)
+#* safety features *#
+safe = [] # forbids unsafe at the crate level
+safest = ["safe", "devela/safest"] # forbids unsafe recursively
+unsafe = [] # enables unsafe alternatives. incompatible with "safe" (unused)
+unsafest = ["unsafe", "devela/unsafest"] # enables unsafe recursively
 
-nightly = [] # used only for better docs
-nightly_docs = ["nightly", "std"] # features to document
+#* nightly features *#
+nightly = [] # enables the nightly features
+nightly_docs = ["nightly", "std"] # features for docs.rs
 
+# ------------------------------------------------------------------------------
 
 [dependencies]
-devela = { version = "0.6.1", default-features = false }
-
+devela = { version = "0.8.0", default-features = false }
 
 [dev-dependencies]
-# rand = { version = "0.8.5", features = ["small_rng"] }
-# rand_xoshiro = "0.6.0"
-# depura = { version = "0.0.3", default-features = false }
 
+# ------------------------------------------------------------------------------
 
 [package.metadata.docs.rs]
 no-default-features = true
