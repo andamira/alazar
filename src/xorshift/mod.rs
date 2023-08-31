@@ -144,7 +144,7 @@ impl XorShift64 {
     /// Returns `None` if seed == `0`.
     #[inline]
     #[must_use]
-    pub fn new(seed: u64) -> Option<Self> {
+    pub const fn new(seed: u64) -> Option<Self> {
         if seed == 0 {
             None
         } else {
@@ -172,31 +172,14 @@ impl XorShift64 {
 pub struct XorShift128([u32; 4]);
 
 impl XorShift128 {
-    /// Returns a seeded XorShift128 generator from the given 2 × 64-bit seeds.
-    #[inline]
-    #[must_use]
-    pub const fn new2(seed1: u64, seed2: u64) -> Option<Self> {
-        if (seed1 | seed2) != 0 {
-            let high1: u32 = (seed1 >> 32) as u32;
-            let low1: u32 = (seed1 & u32::MAX as u64) as u32;
-
-            let high2: u32 = (seed2 >> 32) as u32;
-            let low2: u32 = (seed2 & u32::MAX as u64) as u32;
-
-            Some(Self([low1, high1, low2, high2]))
-        } else {
-            None
-        }
-    }
-
     /// Returns a seeded `XorShift128` generator from the given 4 × 32-bit seeds.
     ///
     /// Returns `None` if all given seeds are `0`.
     #[inline]
     #[must_use]
-    pub const fn new4(seed1: u32, seed2: u32, seed3: u32, seed4: u32) -> Option<Self> {
-        if (seed1 | seed2 | seed3 | seed4) != 0 {
-            Some(Self([seed1, seed2, seed3, seed4]))
+    pub const fn new(seeds: [u32; 4]) -> Option<Self> {
+        if (seeds[0] | seeds[1] | seeds[2] | seeds[3]) != 0 {
+            Some(Self([seeds[0], seeds[1], seeds[2], seeds[3]]))
         } else {
             None
         }
@@ -249,9 +232,9 @@ impl XorShift128p {
     /// Returns `None` if all given seeds are `0`.
     #[inline]
     #[must_use]
-    pub const fn new2(seed1: u64, seed2: u64) -> Option<Self> {
-        if (seed1 | seed2) != 0 {
-            Some(Self([seed1, seed2]))
+    pub const fn new2(seeds: [u64; 2]) -> Option<Self> {
+        if (seeds[0] | seeds[1]) != 0 {
+            Some(Self(seeds))
         } else {
             None
         }
@@ -262,14 +245,14 @@ impl XorShift128p {
     /// Returns `None` if all given seeds are `0`.
     #[inline]
     #[must_use]
-    pub const fn new4(seed1: u32, seed2: u32, seed3: u32, seed4: u32) -> Option<Self> {
-        if (seed1 | seed2 | seed3 | seed4) != 0 {
-            let high1: u64 = (seed2 as u64) << 32;
-            let low1: u64 = seed1 as u64;
+    pub const fn new4(seeds: [u32; 4]) -> Option<Self> {
+        if (seeds[0] | seeds[1] | seeds[2] | seeds[3]) != 0 {
+            let high1: u64 = (seeds[1] as u64) << 32;
+            let low1: u64 = seeds[0] as u64;
             let seed1: u64 = high1 | low1;
 
-            let high2: u64 = (seed4 as u64) << 32;
-            let low2: u64 = seed3 as u64;
+            let high2: u64 = (seeds[3] as u64) << 32;
+            let low2: u64 = seeds[2] as u64;
             let seed2: u64 = high2 | low2;
 
             Some(Self([seed1, seed2]))

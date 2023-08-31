@@ -50,24 +50,24 @@ impl Xabc {
     /// Returns a seeded `Xabc` generator from the given 3 × 8-bit seed.
     #[inline]
     #[must_use]
-    pub fn new3(seed1: u8, seed2: u8, seed3: u8) -> Self {
+    pub fn new3(seeds: [u8; 3]) -> Self {
         let mut rng = Self {
             a: 0,
             b: 0,
             c: 0,
             x: 0,
         };
-        rng.init_rng(seed1, seed2, seed3);
+        rng.init_rng(seeds);
         rng
     }
 
     /// Reseeds the generator from the given 3 × 8-bit seeds.
     #[inline]
-    pub fn init_rng(&mut self, s1: u8, s2: u8, s3: u8) {
+    pub fn init_rng(&mut self, seeds: [u8; 3]) {
         // XOR new entropy into key state
-        self.a ^= s1;
-        self.b ^= s2;
-        self.c ^= s3;
+        self.a ^= seeds[0];
+        self.b ^= seeds[1];
+        self.c ^= seeds[2];
 
         self.x += 1;
         self.a = self.a ^ self.c ^ self.x;

@@ -32,12 +32,12 @@ pub struct Xyza8a {
 impl Xyza8a {
     /// Returns a seeded `Xyza8a` generator from the given 4 × 8-bit seeds.
     #[inline]
-    pub const fn new(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
+    pub const fn new(seeds: [u8; 4]) -> Self {
         Self {
-            x: seed1,
-            y: seed2,
-            z: seed3,
-            a: seed4,
+            x: seeds[0],
+            y: seeds[1],
+            z: seeds[2],
+            a: seeds[3],
         }
     }
 
@@ -81,25 +81,24 @@ impl Xyza8a {
     /// The seeds will be split in little endian order.
     #[inline]
     pub const fn new1_32(seed: u32) -> Self {
-        let [x, y, z, a] = u32_into_u8_le(seed);
-        Self::new4_8(x, y, z, a)
+        Self::new4_8(u32_into_u8_le(seed))
     }
 
     /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new2_16(seed1: u16, seed2: u16) -> Self {
-        let [x, y] = u16_into_u8_le(seed1);
-        let [z, a] = u16_into_u8_le(seed2);
-        Self::new4_8(x, y, z, a)
+    pub const fn new2_16(seeds: [u16; 2]) -> Self {
+        let [x, y] = u16_into_u8_le(seeds[0]);
+        let [z, a] = u16_into_u8_le(seeds[1]);
+        Self::new4_8([x, y, z, a])
     }
 
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is an alias of [`new`][Self#method.new].
     #[inline(always)]
-    pub const fn new4_8(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
-        Self::new(seed1, seed2, seed3, seed4)
+    pub const fn new4_8(seeds: [u8; 4]) -> Self {
+        Self::new(seeds)
     }
 }
 
@@ -125,12 +124,12 @@ impl Xyza8b {
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is the fastest constructor.
     #[inline]
-    pub const fn new(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
+    pub const fn new(seeds: [u8; 4]) -> Self {
         Self {
-            x: seed1,
-            y: seed2,
-            z: seed3,
-            a: seed4,
+            x: seeds[0],
+            y: seeds[1],
+            z: seeds[2],
+            a: seeds[3],
         }
     }
 
@@ -172,24 +171,23 @@ impl Xyza8b {
     /// The seeds will be split in little endian order.
     #[inline]
     pub const fn new1_32(seed: u32) -> Self {
-        let [x, y, z, a] = u32_into_u8_le(seed);
-        Self::new4_8(x, y, z, a)
+        Self::new4_8(u32_into_u8_le(seed))
     }
 
     /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new2_16(seed1: u16, seed2: u16) -> Self {
-        let [x, y] = u16_into_u8_le(seed1);
-        let [z, a] = u16_into_u8_le(seed2);
-        Self::new4_8(x, y, z, a)
+    pub const fn new2_16(seeds: [u16; 2]) -> Self {
+        let [x, y] = u16_into_u8_le(seeds[0]);
+        let [z, a] = u16_into_u8_le(seeds[1]);
+        Self::new4_8([x, y, z, a])
     }
 
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is an alias of [`new`][Self#method.new].
     #[inline(always)]
-    pub const fn new4_8(seed1: u8, seed2: u8, seed3: u8, seed4: u8) -> Self {
-        Self::new(seed1, seed2, seed3, seed4)
+    pub const fn new4_8(seeds: [u8; 4]) -> Self {
+        Self::new(seeds)
     }
 }
