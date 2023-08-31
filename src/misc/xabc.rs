@@ -47,23 +47,28 @@ pub struct Xabc {
 }
 
 impl Xabc {
-    /// Returns a seeded `Xabc` generator from the given 3 × 8-bit seed.
+    /// Returns a seeded `Xabc` generator from the given 3 × 8-bit seeds.
     #[inline]
     #[must_use]
-    pub fn new3(seeds: [u8; 3]) -> Self {
-        let mut rng = Self {
-            a: 0,
-            b: 0,
-            c: 0,
-            x: 0,
-        };
-        rng.init_rng(seeds);
-        rng
+    pub const fn new(seeds: [u8; 3]) -> Self {
+        let a = seeds[0];
+        let b = seeds[1];
+        let c = seeds[2];
+        let x = 1;
+        let a = a ^ c ^ x;
+        let b = b.wrapping_add(a);
+        let c = c.wrapping_add(b >> 1) ^ a;
+        Self {
+            a,
+            b,
+            c,
+            x,
+        }
     }
 
     /// Reseeds the generator from the given 3 × 8-bit seeds.
     #[inline]
-    pub fn init_rng(&mut self, seeds: [u8; 3]) {
+    pub fn reseed(&mut self, seeds: [u8; 3]) {
         // XOR new entropy into key state
         self.a ^= seeds[0];
         self.b ^= seeds[1];
@@ -89,5 +94,16 @@ impl Xabc {
         // low order bits of other variables
         self.c = self.c.wrapping_add(self.b >> 1) ^ self.a;
         self.c
+    }
+}
+
+/// # Extra constructors
+impl Xabc {
+    /// Returns a seeded `Xabc` generator from the given 3 × 8-bit seeds.
+    ///
+    /// This is an alias of [`new`][Self#method.new].
+    #[inline]
+    pub const fn new3_8(seeds: [u8; 3]) -> Self {
+        Self::new(seeds)
     }
 }
