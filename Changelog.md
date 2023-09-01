@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
-## [0.0.1] - 2023-08-31
+## [0.0.1] - 2023-09-01
 
 ### Added
 - Add PRNGS: `Mult13P1`, `Xabc`, `XorShift8`, `XorShift8Custom`, `XorShift16`, `XorShift32`, `XorShift64`, `XorShift128`, `XorShift128p`, `Xyza8a`, `Xyza8b`.
