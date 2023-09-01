@@ -58,7 +58,7 @@ impl XorShift16 {
     #[inline]
     #[must_use]
     pub const fn new_unchecked(seed: u16) -> Self {
-        debug_assert![seed == 0, "Seed must be non-zero"];
+        debug_assert![seed != 0, "Seed must be non-zero"];
         Self(seed)
     }
 

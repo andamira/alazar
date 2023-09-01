@@ -63,7 +63,7 @@ impl XorShift128 {
     #[must_use]
     pub const fn new_unchecked(seeds: [u32; 4]) -> Self {
         debug_assert![
-            (seeds[0] | seeds[1] | seeds[2] | seeds[3]) == 0,
+            (seeds[0] | seeds[1] | seeds[2] | seeds[3]) != 0,
             "Seeds must be non-zero"
         ];
         Self(seeds)
@@ -223,7 +223,7 @@ impl XorShift128p {
     #[inline]
     #[must_use]
     pub const fn new_unchecked(seeds: [u64; 2]) -> Self {
-        debug_assert![(seeds[0] | seeds[1]) == 0, "Seeds must be non-zero"];
+        debug_assert![(seeds[0] | seeds[1]) != 0, "Seeds must be non-zero"];
         Self(seeds)
     }
 

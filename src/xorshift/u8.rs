@@ -54,7 +54,7 @@ impl XorShift8 {
     #[inline]
     #[must_use]
     pub const fn new_unchecked(seed: u8) -> Self {
-        debug_assert![seed == 0, "Seed must be non-zero"];
+        debug_assert![seed != 0, "Seed must be non-zero"];
         Self(seed)
     }
 
@@ -165,7 +165,7 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
         debug_assert![SH1 > 0 && SH1 <= 7];
         debug_assert![SH2 > 0 && SH1 <= 7];
         debug_assert![SH3 > 0 && SH1 <= 7];
-        debug_assert![seed == 0, "Seed must be non-zero"];
+        debug_assert![seed != 0, "Seed must be non-zero"];
         Self(seed)
     }
 
