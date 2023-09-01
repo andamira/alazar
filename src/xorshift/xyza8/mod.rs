@@ -91,24 +91,24 @@ impl Xyza8a {
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new1_32(seed: u32) -> Self {
-        Self::new4_8(u32_into_u8_le(seed))
+    pub const fn new1_u32(seed: u32) -> Self {
+        Self::new(u32_into_u8_le(seed))
     }
 
     /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new2_16(seeds: [u16; 2]) -> Self {
+    pub const fn new2_u16(seeds: [u16; 2]) -> Self {
         let [x, y] = u16_into_u8_le(seeds[0]);
         let [z, a] = u16_into_u8_le(seeds[1]);
-        Self::new4_8([x, y, z, a])
+        Self::new([x, y, z, a])
     }
 
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is an alias of [`new`][Self#method.new].
     #[inline(always)]
-    pub const fn new4_8(seeds: [u8; 4]) -> Self {
+    pub const fn new4_u8(seeds: [u8; 4]) -> Self {
         Self::new(seeds)
     }
 }
@@ -192,24 +192,24 @@ impl Xyza8b {
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new1_32(seed: u32) -> Self {
-        Self::new4_8(u32_into_u8_le(seed))
+    pub const fn new1_u32(seed: u32) -> Self {
+        Self::new(u32_into_u8_le(seed))
     }
 
     /// Returns a seeded `Xyza8a` generator from the given 2 × 16-bit seeds.
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new2_16(seeds: [u16; 2]) -> Self {
+    pub const fn new2_u16(seeds: [u16; 2]) -> Self {
         let [x, y] = u16_into_u8_le(seeds[0]);
         let [z, b] = u16_into_u8_le(seeds[1]);
-        Self::new4_8([x, y, z, b])
+        Self::new([x, y, z, b])
     }
 
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is an alias of [`new`][Self#method.new].
     #[inline(always)]
-    pub const fn new4_8(seeds: [u8; 4]) -> Self {
+    pub const fn new4_u8(seeds: [u8; 4]) -> Self {
         Self::new(seeds)
     }
 }

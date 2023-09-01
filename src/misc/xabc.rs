@@ -128,7 +128,7 @@ impl Xabc {
     ///
     /// This is an alias of [`new`][Self#method.new].
     #[inline]
-    pub const fn new3_8(seeds: [u8; 3]) -> Self {
+    pub const fn new3_u8(seeds: [u8; 3]) -> Self {
         Self::new(seeds)
     }
 }

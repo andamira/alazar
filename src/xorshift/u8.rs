@@ -89,6 +89,17 @@ impl XorShift8 {
     }
 }
 
+/// # Extra constructors
+impl XorShift8 {
+    /// Returns a seeded `XorShift8` generator from the given 8-bit seed.
+    ///
+    /// This is an alias of [`new`][Self#method.new].
+    #[inline]
+    pub const fn new1_u8(seed: u8) -> Option<Self> {
+        Self::new(seed)
+    }
+}
+
 /// A version of [`XorShift8`] that allows customizing the shift values.
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
@@ -186,5 +197,16 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
         x ^= x >> SH2;
         x ^= x << SH3;
         Self(x)
+    }
+}
+
+/// # Extra constructors
+impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, SH2, SH3> {
+    /// Returns a seeded `XorShift8Custom` generator from the given 8-bit seed.
+    ///
+    /// This is an alias of [`new`][Self#method.new].
+    #[inline]
+    pub const fn new1_u8(seed: u8) -> Option<Self> {
+        Self::new(seed)
     }
 }

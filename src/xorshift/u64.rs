@@ -99,7 +99,7 @@ impl XorShift64 {
     ///
     /// This is an alias of [`new`][Self#method.new].
     #[inline]
-    pub const fn new1_64(seed: u64) -> Option<Self> {
+    pub const fn new1_u64(seed: u64) -> Option<Self> {
         Self::new(seed)
     }
 
@@ -107,7 +107,7 @@ impl XorShift64 {
     ///
     /// The seeds will be joined in little endian order.
     #[inline]
-    pub const fn new2_32(seeds: [u32; 2]) -> Option<Self> {
+    pub const fn new2_u32(seeds: [u32; 2]) -> Option<Self> {
         Self::new(u64_from_u32_le(seeds))
     }
 
@@ -115,7 +115,7 @@ impl XorShift64 {
     ///
     /// The seeds will be joined in little endian order.
     #[inline]
-    pub const fn new4_16(seeds: [u16; 4]) -> Option<Self> {
+    pub const fn new4_u16(seeds: [u16; 4]) -> Option<Self> {
         Self::new(u64_from_u16_le(seeds))
     }
 
@@ -123,7 +123,7 @@ impl XorShift64 {
     ///
     /// The seeds will be joined in little endian order.
     #[inline]
-    pub const fn new8_8(seeds: [u8; 8]) -> Option<Self> {
+    pub const fn new8_u8(seeds: [u8; 8]) -> Option<Self> {
         Self::new(u64_from_u8_le(seeds))
     }
 }

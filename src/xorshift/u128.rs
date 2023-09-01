@@ -117,7 +117,7 @@ impl XorShift128 {
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new1_128(seed: u128) -> Option<Self> {
+    pub const fn new1_u128(seed: u128) -> Option<Self> {
         Self::new(u128_into_u32_le(seed))
     }
 
@@ -125,7 +125,7 @@ impl XorShift128 {
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new2_64(seeds: [u64; 2]) -> Option<Self> {
+    pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
         let [x, y] = u64_into_u32_le(seeds[0]);
         let [z, a] = u64_into_u32_le(seeds[1]);
         Self::new([x, y, z, a])
@@ -135,7 +135,7 @@ impl XorShift128 {
     ///
     /// This is an alias of [`new`][Self#method.new].
     #[inline]
-    pub const fn new4_32(seeds: [u32; 4]) -> Option<Self> {
+    pub const fn new4_u32(seeds: [u32; 4]) -> Option<Self> {
         Self::new(seeds)
     }
 
@@ -143,7 +143,7 @@ impl XorShift128 {
     ///
     /// The seeds will be joined in little endian order.
     #[inline]
-    pub const fn new8_16(seeds: [u16; 8]) -> Option<Self> {
+    pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
             u32_from_u16_le([seeds[0], seeds[1]]),
             u32_from_u16_le([seeds[2], seeds[3]]),
@@ -156,7 +156,7 @@ impl XorShift128 {
     ///
     /// The seeds will be joined in little endian order.
     #[inline]
-    pub const fn new16_8(seeds: [u8; 16]) -> Option<Self> {
+    pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         Self::new([
             u32_from_u8_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
             u32_from_u8_le([seeds[4], seeds[5], seeds[6], seeds[7]]),
@@ -237,7 +237,7 @@ impl XorShift128p {
     /// Returns the next random `u64`.
     #[inline]
     #[must_use]
-    pub fn next_64(&mut self) -> u64 {
+    pub fn next_u64(&mut self) -> u64 {
         let [s0, mut s1] = [self.0[0], self.0[1]];
         let result = s0.wrapping_add(s1);
 
@@ -269,7 +269,7 @@ impl XorShift128p {
     ///
     /// The seeds will be split in little endian order.
     #[inline]
-    pub const fn new1_128(seed: u128) -> Option<Self> {
+    pub const fn new1_u128(seed: u128) -> Option<Self> {
         Self::new(u128_into_u64_le(seed))
     }
 
@@ -277,7 +277,7 @@ impl XorShift128p {
     ///
     /// This is an alias of [`new`][Self#method.new].
     #[inline]
-    pub const fn new2_64(seeds: [u64; 2]) -> Option<Self> {
+    pub const fn new2_u64(seeds: [u64; 2]) -> Option<Self> {
         Self::new(seeds)
     }
 
@@ -285,7 +285,7 @@ impl XorShift128p {
     ///
     /// The seeds will be joined in little endian order.
     #[inline]
-    pub const fn new4_32(seeds: [u32; 4]) -> Option<Self> {
+    pub const fn new4_u32(seeds: [u32; 4]) -> Option<Self> {
         Self::new([
             u64_from_u32_le([seeds[0], seeds[1]]),
             u64_from_u32_le([seeds[2], seeds[3]]),
@@ -296,7 +296,7 @@ impl XorShift128p {
     ///
     /// The seeds will be joined in little endian order.
     #[inline]
-    pub const fn new8_16(seeds: [u16; 8]) -> Option<Self> {
+    pub const fn new8_u16(seeds: [u16; 8]) -> Option<Self> {
         Self::new([
             u64_from_u16_le([seeds[0], seeds[1], seeds[2], seeds[3]]),
             u64_from_u16_le([seeds[4], seeds[5], seeds[6], seeds[7]]),
@@ -307,7 +307,7 @@ impl XorShift128p {
     ///
     /// The seeds will be joined in little endian order.
     #[inline]
-    pub const fn new16_8(seeds: [u8; 16]) -> Option<Self> {
+    pub const fn new16_u8(seeds: [u8; 16]) -> Option<Self> {
         let s = seeds;
         Self::new([
             u64_from_u8_le([s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]]),

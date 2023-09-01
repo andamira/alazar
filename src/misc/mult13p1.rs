@@ -69,3 +69,14 @@ impl Mult13P1 {
         Self { state }
     }
 }
+
+/// # Extra constructors
+impl Mult13P1 {
+    /// Returns a seeded `Mult13P1` generator from the given 8-bit seed.
+    ///
+    /// This is an alias of [`new`][Self#method.new].
+    #[inline]
+    pub const fn new1_u8(seed: u8) -> Self {
+        Self::new(seed)
+    }
+}
