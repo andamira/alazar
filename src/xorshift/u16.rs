@@ -28,6 +28,16 @@ impl XorShift16 {
         }
     }
 
+    /// Returns a seeded `XorShift16` generator from the given 8-bit seed, unchecked.
+    ///
+    /// The seed must not be `0`, otherwise every result will also be `0`.
+    #[inline]
+    #[must_use]
+    pub const fn new_unchecked(seed: u16) -> Self {
+        debug_assert![seed == 0, "Seed must be non-zero"];
+        Self(seed)
+    }
+
     /// Returns the current random `u16`.
     #[inline(always)]
     #[must_use]

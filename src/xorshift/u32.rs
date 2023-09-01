@@ -28,6 +28,16 @@ impl XorShift32 {
         }
     }
 
+    /// Returns a seeded `XorShift32` generator from the given 8-bit seed, unchecked.
+    ///
+    /// The seed must not be `0`, otherwise every result will also be `0`.
+    #[inline]
+    #[must_use]
+    pub const fn new_unchecked(seed: u32) -> Self {
+        debug_assert![seed == 0, "Seed must be non-zero"];
+        Self(seed)
+    }
+
     /// Returns the current random `u32`.
     #[inline(always)]
     #[must_use]

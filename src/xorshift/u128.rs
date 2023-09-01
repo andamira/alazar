@@ -28,6 +28,23 @@ impl XorShift128 {
         }
     }
 
+    /// Returns a seeded `XorShift128` generator from the given 8-bit seed,
+    /// unchecked.
+    ///
+    /// The seeds must not be all `0`, otherwise every result will also be `0`.
+    ///
+    /// # Panics
+    /// Panics in debug if the seeds are all `0`.
+    #[inline]
+    #[must_use]
+    pub const fn new_unchecked(seeds: [u32; 4]) -> Self {
+        debug_assert![
+            (seeds[0] | seeds[1] | seeds[2] | seeds[3]) == 0,
+            "Seeds must be non-zero"
+        ];
+        Self(seeds)
+    }
+
     /// Returns the current random `u64`.
     #[inline(always)]
     #[must_use]
@@ -146,6 +163,20 @@ impl XorShift128p {
         } else {
             None
         }
+    }
+
+    /// Returns a seeded `XorShift128p` generator from the given 8-bit seed,
+    /// unchecked.
+    ///
+    /// The seeds must not be all `0`, otherwise every result will also be `0`.
+    ///
+    /// # Panics
+    /// Panics in debug if the seeds are all `0`.
+    #[inline]
+    #[must_use]
+    pub const fn new_unchecked(seeds: [u64; 2]) -> Self {
+        debug_assert![(seeds[0] | seeds[1]) == 0, "Seeds must be non-zero"];
+        Self(seeds)
     }
 
     /// Returns the current random `u64`.

@@ -25,6 +25,16 @@ impl XorShift8 {
         }
     }
 
+    /// Returns a seeded `XorShift8` generator from the given 8-bit seed, unchecked.
+    ///
+    /// The seed must not be `0`, otherwise every result will also be `0`.
+    #[inline]
+    #[must_use]
+    pub const fn new_unchecked(seed: u8) -> Self {
+        debug_assert![seed == 0, "Seed must be non-zero"];
+        Self(seed)
+    }
+
     /// Returns the current random `u8`.
     #[inline(always)]
     #[must_use]
@@ -63,6 +73,8 @@ impl XorShift8 {
 pub struct XorShift8Gen<const S1: usize, const S2: usize, const S3: usize>(u8);
 
 impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3> {
+    /// Returns a seeded `XorShift8Gen` generator from the given 8-bit seed.
+    ///
     /// Returns `None` if seed == `0`.
     ///
     /// # Panic
@@ -78,6 +90,24 @@ impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3>
         } else {
             Some(Self(seed))
         }
+    }
+
+    /// Returns a seeded `XorShift8Gen` generator from the given 8-bit seed,
+    /// unchecked.
+    ///
+    /// The seed must not be `0`, otherwise every result will also be `0`.
+    ///
+    /// # Panic
+    /// Panics in debug if either `S1`, `S2` or `S3` are < 1 or > 7,
+    /// or if the seed is `0`.
+    #[inline]
+    #[must_use]
+    pub const fn new_unchecked(seed: u8) -> Self {
+        debug_assert![S1 > 0 && S1 <= 7];
+        debug_assert![S2 > 0 && S1 <= 7];
+        debug_assert![S3 > 0 && S1 <= 7];
+        debug_assert![seed == 0, "Seed must be non-zero"];
+        Self(seed)
     }
 
     /// Returns the current random `u8`.
