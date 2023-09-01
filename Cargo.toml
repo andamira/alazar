@@ -15,8 +15,8 @@ include = [
 	"/LICENSE-*",
 	"/README.md",
 ]
-categories = ["no-std::no-alloc"]
-keywords = []
+categories = ["algorithms", "embedded", "no-std::no-alloc"]
+keywords = ["rand", "random", "rng", "prng"]
 publish = false
 
 # ------------------------------------------------------------------------------
@@ -38,12 +38,15 @@ no_std = [] # enables functionality incompatible with the standard library (unus
 #* safety features *#
 safe = [] # forbids unsafe at the crate level
 safest = ["safe", "devela/safest"] # forbids unsafe recursively
-unsafe = [] # enables unsafe alternatives. incompatible with "safe" (unused)
+unsafe = [] # enables unsafe at the crate level (unused)
 unsafest = ["unsafe", "devela/unsafest"] # enables unsafe recursively
 
 #* nightly features *#
 nightly = [] # enables the nightly features
 nightly_docs = ["nightly", "std", "rand_core"] # features for docs.rs
+
+#* other features *#
+all = ["rand_core"]
 
 # ------------------------------------------------------------------------------
 
