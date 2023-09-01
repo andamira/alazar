@@ -127,3 +127,59 @@ impl XorShift64 {
         Self::new(u64_from_u8_le(seeds))
     }
 }
+
+#[cfg(feature = "rand_core")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "rand_core")))]
+mod impl_rand {
+    use super::XorShift64;
+    use rand_core::{Error, RngCore, SeedableRng};
+
+    impl RngCore for XorShift64 {
+        /// Returns the next random `u32`,
+        /// from the first 32-bits of `next_u64`.
+        fn next_u32(&mut self) -> u32 {
+            (self.next_u64() & 0xFFFF_FFFF) as u32
+        }
+
+        /// Returns the next random `u64`.
+        fn next_u64(&mut self) -> u64 {
+            self.next_u64()
+        }
+
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            let mut i = 0;
+            while i < dest.len() {
+                let random_u64 = self.next_u64();
+                let bytes = random_u64.to_le_bytes();
+                let remaining = dest.len() - i;
+
+                if remaining >= 8 {
+                    dest[i..i + 8].copy_from_slice(&bytes);
+                    i += 8;
+                } else {
+                    dest[i..].copy_from_slice(&bytes[..remaining]);
+                    break;
+                }
+            }
+        }
+
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+            self.fill_bytes(dest);
+            Ok(())
+        }
+    }
+
+    impl SeedableRng for XorShift64 {
+        type Seed = [u8; 8];
+
+        /// When seeded with zero this implementation uses the default seed
+        /// value as the cold path.
+        fn from_seed(seed: Self::Seed) -> Self {
+            if seed == [0; 8] {
+                Self::cold_path_default()
+            } else {
+                Self::new_unchecked(u64::from_le_bytes(seed))
+            }
+        }
+    }
+}

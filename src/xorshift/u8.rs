@@ -210,3 +210,116 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
         Self::new(seed)
     }
 }
+
+#[cfg(feature = "rand_core")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "rand_core")))]
+mod impl_rand {
+    use super::{XorShift8, XorShift8Custom};
+    use rand_core::{Error, RngCore, SeedableRng};
+
+    impl RngCore for XorShift8 {
+        /// Returns the next 4 × random `u8` combined as a single `u32`.
+        fn next_u32(&mut self) -> u32 {
+            u32::from_le_bytes([
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+            ])
+        }
+
+        /// Returns the next 8 × random `u8` combined as a single `u64`.
+        fn next_u64(&mut self) -> u64 {
+            u64::from_le_bytes([
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+            ])
+        }
+
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            for byte in dest {
+                *byte = self.next_u8();
+            }
+        }
+
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+            self.fill_bytes(dest);
+            Ok(())
+        }
+    }
+
+    impl SeedableRng for XorShift8 {
+        type Seed = [u8; 1];
+
+        /// When seeded with zero this implementation uses the default seed
+        /// value as the cold path.
+        fn from_seed(seed: Self::Seed) -> Self {
+            if seed[0] == 0 {
+                Self::cold_path_default()
+            } else {
+                Self::new_unchecked(seed[0])
+            }
+        }
+    }
+
+    impl<const SH1: usize, const SH2: usize, const SH3: usize> RngCore
+        for XorShift8Custom<SH1, SH2, SH3>
+    {
+        /// Returns the next 4 × random `u8` combined as a single `u32`.
+        fn next_u32(&mut self) -> u32 {
+            u32::from_le_bytes([
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+            ])
+        }
+
+        /// Returns the next 8 × random `u8` combined as a single `u64`.
+        fn next_u64(&mut self) -> u64 {
+            u64::from_le_bytes([
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+            ])
+        }
+
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            for byte in dest {
+                *byte = self.next_u8();
+            }
+        }
+
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+            self.fill_bytes(dest);
+            Ok(())
+        }
+    }
+
+    impl<const SH1: usize, const SH2: usize, const SH3: usize> SeedableRng
+        for XorShift8Custom<SH1, SH2, SH3>
+    {
+        type Seed = [u8; 1];
+
+        /// When seeded with zero this implementation uses the default seed
+        /// value as the cold path.
+        fn from_seed(seed: Self::Seed) -> Self {
+            if seed[0] == 0 {
+                Self::cold_path_default()
+            } else {
+                Self::new_unchecked(seed[0])
+            }
+        }
+    }
+}

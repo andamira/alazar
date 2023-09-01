@@ -80,3 +80,55 @@ impl Mult13P1 {
         Self::new(seed)
     }
 }
+
+#[cfg(feature = "rand_core")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "rand_core")))]
+mod impl_rand {
+    use super::Mult13P1;
+    use rand_core::{Error, RngCore, SeedableRng};
+
+    impl RngCore for Mult13P1 {
+        /// Returns the next 4 × random `u8` combined as a single `u32`.
+        fn next_u32(&mut self) -> u32 {
+            u32::from_le_bytes([
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+            ])
+        }
+
+        /// Returns the next 8 × random `u8` combined as a single `u64`.
+        fn next_u64(&mut self) -> u64 {
+            u64::from_le_bytes([
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+                self.next_u8(),
+            ])
+        }
+
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            for byte in dest {
+                *byte = self.next_u8();
+            }
+        }
+
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+            self.fill_bytes(dest);
+            Ok(())
+        }
+    }
+
+    impl SeedableRng for Mult13P1 {
+        type Seed = [u8; 1];
+
+        fn from_seed(seed: Self::Seed) -> Self {
+            Self::new(seed[0])
+        }
+    }
+}

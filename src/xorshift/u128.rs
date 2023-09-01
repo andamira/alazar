@@ -315,3 +315,130 @@ impl XorShift128p {
         ])
     }
 }
+
+#[cfg(feature = "rand_core")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "rand_core")))]
+mod impl_rand {
+    use super::{XorShift128, XorShift128p};
+    use rand_core::{Error, RngCore, SeedableRng};
+
+    impl RngCore for XorShift128 {
+        /// Returns the next random `u32`,
+        /// from the first 32-bits of `next_u64`.
+        fn next_u32(&mut self) -> u32 {
+            (self.next_u64() & 0xFFFF_FFFF) as u32
+        }
+
+        /// Returns the next random `u64`.
+        fn next_u64(&mut self) -> u64 {
+            self.next_u64()
+        }
+
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            let mut i = 0;
+            while i < dest.len() {
+                let random_u64 = self.next_u64();
+                let bytes = random_u64.to_le_bytes();
+                let remaining = dest.len() - i;
+
+                if remaining >= 8 {
+                    dest[i..i + 8].copy_from_slice(&bytes);
+                    i += 8;
+                } else {
+                    dest[i..].copy_from_slice(&bytes[..remaining]);
+                    break;
+                }
+            }
+        }
+
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+            self.fill_bytes(dest);
+            Ok(())
+        }
+    }
+
+    impl SeedableRng for XorShift128 {
+        type Seed = [u8; 16];
+
+        /// When seeded with zero this implementation uses the default seed
+        /// value as the cold path.
+        fn from_seed(seed: Self::Seed) -> Self {
+            let mut seed_u32s = [0u32; 4];
+            if seed == [0; 16] {
+                Self::cold_path_default()
+            } else {
+                for i in 0..4 {
+                    seed_u32s[i] = u32::from_le_bytes([
+                        seed[i * 4],
+                        seed[i * 4 + 1],
+                        seed[i * 4 + 2],
+                        seed[i * 4 + 3],
+                    ]);
+                }
+                Self::new_unchecked(seed_u32s)
+            }
+        }
+    }
+
+    impl RngCore for XorShift128p {
+        /// Returns the next random `u32`,
+        /// from the first 32-bits of `next_u64`.
+        fn next_u32(&mut self) -> u32 {
+            (self.next_u64() & 0xFFFF_FFFF) as u32
+        }
+
+        /// Returns the next random `u64`.
+        fn next_u64(&mut self) -> u64 {
+            self.next_u64()
+        }
+
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            let mut i = 0;
+            while i < dest.len() {
+                let random_u64 = self.next_u64();
+                let bytes = random_u64.to_le_bytes();
+                let remaining = dest.len() - i;
+
+                if remaining >= 8 {
+                    dest[i..i + 8].copy_from_slice(&bytes);
+                    i += 8;
+                } else {
+                    dest[i..].copy_from_slice(&bytes[..remaining]);
+                    break;
+                }
+            }
+        }
+
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+            self.fill_bytes(dest);
+            Ok(())
+        }
+    }
+
+    impl SeedableRng for XorShift128p {
+        type Seed = [u8; 16];
+
+        /// When seeded with zero this implementation uses the default seed
+        /// value as the cold path.
+        fn from_seed(seed: Self::Seed) -> Self {
+            let mut seed_u64s = [0u64; 2];
+            if seed == [0; 16] {
+                Self::cold_path_default()
+            } else {
+                for i in 0..2 {
+                    seed_u64s[i] = u64::from_le_bytes([
+                        seed[i * 8],
+                        seed[i * 8 + 1],
+                        seed[i * 8 + 2],
+                        seed[i * 8 + 3],
+                        seed[i * 8 + 4],
+                        seed[i * 8 + 5],
+                        seed[i * 8 + 6],
+                        seed[i * 8 + 7],
+                    ]);
+                }
+                Self::new_unchecked(seed_u64s)
+            }
+        }
+    }
+}

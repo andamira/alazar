@@ -26,8 +26,13 @@ default = ["std"]
 
 #* environment features *#
 # (not enabling "std" declares the library as "no_std")
-std = ["alloc"] # enables functionality that depend on the standard library
-alloc = [] # enables functionality that depend on allocation (unused)
+std = [ # enables functionality that depend on the standard library
+	"alloc",
+	"rand_core?/std",
+]
+alloc = [ # enables functionality that depend on allocation
+	"rand_core?/alloc",
+]
 no_std = [] # enables functionality incompatible with the standard library (unused)
 
 #* safety features *#
@@ -38,12 +43,15 @@ unsafest = ["unsafe", "devela/unsafest"] # enables unsafe recursively
 
 #* nightly features *#
 nightly = [] # enables the nightly features
-nightly_docs = ["nightly", "std"] # features for docs.rs
+nightly_docs = ["nightly", "std", "rand_core"] # features for docs.rs
 
 # ------------------------------------------------------------------------------
 
 [dependencies]
 devela = { version = "0.8.0", default-features = false }
+
+#* optional dependencies *#
+rand_core = { version = "0.6.4", optional = true, default-features = false }
 
 [dev-dependencies]
 

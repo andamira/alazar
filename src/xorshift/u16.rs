@@ -112,3 +112,65 @@ impl XorShift16 {
         Self::new(u16_from_u8_le(seeds))
     }
 }
+
+#[cfg(feature = "rand_core")]
+#[cfg_attr(feature = "nightly", doc(cfg(feature = "rand_core")))]
+mod impl_rand {
+    use super::XorShift16;
+    use devela::convert::{u32_from_u16_le, u64_from_u16_le};
+    use rand_core::{Error, RngCore, SeedableRng};
+
+    impl RngCore for XorShift16 {
+        /// Returns the next 2 × random `u16` combined as a single `u32`.
+        fn next_u32(&mut self) -> u32 {
+            u32_from_u16_le([self.next_u16(), self.next_u16()])
+        }
+
+        /// Returns the next 4 × random `u16` combined as a single `u64`.
+        fn next_u64(&mut self) -> u64 {
+            u64_from_u16_le([
+                self.next_u16(),
+                self.next_u16(),
+                self.next_u16(),
+                self.next_u16(),
+            ])
+        }
+
+        fn fill_bytes(&mut self, dest: &mut [u8]) {
+            let mut i = 0;
+            while i < dest.len() {
+                let random_u16 = self.next_u16();
+                let bytes = random_u16.to_le_bytes();
+                let remaining = dest.len() - i;
+
+                if remaining >= 2 {
+                    dest[i] = bytes[0];
+                    dest[i + 1] = bytes[1];
+                    i += 2;
+                } else {
+                    dest[i] = bytes[0];
+                    i += 1;
+                }
+            }
+        }
+
+        fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
+            self.fill_bytes(dest);
+            Ok(())
+        }
+    }
+
+    impl SeedableRng for XorShift16 {
+        type Seed = [u8; 2];
+
+        /// When seeded with zero this implementation uses the default seed
+        /// value as the cold path.
+        fn from_seed(seed: Self::Seed) -> Self {
+            if seed == [0; 2] {
+                Self::cold_path_default()
+            } else {
+                Self::new_unchecked(u16::from_le_bytes(seed))
+            }
+        }
+    }
+}
