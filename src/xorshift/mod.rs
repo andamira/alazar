@@ -3,11 +3,11 @@
 //! Pseudo-random number generators based on [Xorshift].
 //!
 //! This module defines several types:
-//! - classic XorShift algorithms:
+//! - classic *XorShift* algorithms:
 //!   ([`XorShift32`], [`XorShift64`], [`XorShift128`], [`XorShift128p`]).
 //! - variations with a smaller state:
 //!   ([`XorShift16`], [`XorShift8`]).
-//! - other implementations loosely based on XorShift:
+//! - other implementations loosely based on *XorShift*:
 //!   ([`Xyza8a`], [`Xyza8b`]).
 //!
 //! [Xorshift]: https://en.wikipedia.org/wiki/Xorshift

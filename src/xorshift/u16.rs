@@ -10,7 +10,7 @@ use devela::convert::u16_from_u8_le;
 /// It has a 16-bit state and generates 16-bit numbers.
 ///
 /// This is John Metcalf's 16-bit (7, 8, 9) version of George Marsaglia's
-/// original [`XorShift32`].
+/// original [`XorShift32`][super::XorShift32].
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift16(u16);
 

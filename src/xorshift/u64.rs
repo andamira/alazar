@@ -9,7 +9,7 @@ use devela::convert::{u64_from_u16_le, u64_from_u32_le, u64_from_u8_le};
 ///
 /// It has a 64-bit state and generates 64-bit numbers.
 ///
-/// This is the classic 64-bit XorShift algorithm (13, 7, 17),
+/// This is the classic 64-bit *XorShift* algorithm (13, 7, 17),
 /// by George Marsaglia.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift64(u64);

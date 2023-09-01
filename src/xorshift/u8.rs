@@ -7,7 +7,7 @@
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
 ///
-/// This is a simple 8-bit version (3, 4, 2) of [`XorShift16`].
+/// This is a simple 8-bit version (3, 4, 2) of [`XorShift16`][super::XorShift16].
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift8(u8);
 
@@ -66,24 +66,23 @@ impl XorShift8 {
     }
 }
 
-/// Const generic version of the 8-bit XorShift algorithm letting you customize
-/// the shifts.
+/// A version of [`XorShift8`] that allows customizing the shift values.
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
-pub struct XorShift8Gen<const S1: usize, const S2: usize, const S3: usize>(u8);
+pub struct XorShift8Gen<const SH1: usize = 3, const SH2: usize = 4, const SH3: usize = 2>(u8);
 
-impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3> {
+impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Gen<SH1, SH2, SH3> {
     /// Returns a seeded `XorShift8Gen` generator from the given 8-bit seed.
     ///
     /// Returns `None` if seed == `0`.
     ///
-    /// # Panic
-    /// Panics in debug if either `S1`, `S2` or `S3` are < 1 or > 7.
+    /// # Panics
+    /// Panics in debug if either `SH1`, `SH2` or `SH3` are < 1 or > 7.
     #[inline]
     pub const fn new(seed: u8) -> Option<Self> {
-        debug_assert![S1 > 0 && S1 <= 7];
-        debug_assert![S2 > 0 && S1 <= 7];
-        debug_assert![S3 > 0 && S1 <= 7];
+        debug_assert![SH1 > 0 && SH1 <= 7];
+        debug_assert![SH2 > 0 && SH1 <= 7];
+        debug_assert![SH3 > 0 && SH1 <= 7];
 
         if seed == 0 {
             None
@@ -97,15 +96,15 @@ impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3>
     ///
     /// The seed must not be `0`, otherwise every result will also be `0`.
     ///
-    /// # Panic
-    /// Panics in debug if either `S1`, `S2` or `S3` are < 1 or > 7,
+    /// # Panics
+    /// Panics in debug if either `SH1`, `SH2` or `SH3` are < 1 or > 7,
     /// or if the seed is `0`.
     #[inline]
     #[must_use]
     pub const fn new_unchecked(seed: u8) -> Self {
-        debug_assert![S1 > 0 && S1 <= 7];
-        debug_assert![S2 > 0 && S1 <= 7];
-        debug_assert![S3 > 0 && S1 <= 7];
+        debug_assert![SH1 > 0 && SH1 <= 7];
+        debug_assert![SH2 > 0 && SH1 <= 7];
+        debug_assert![SH3 > 0 && SH1 <= 7];
         debug_assert![seed == 0, "Seed must be non-zero"];
         Self(seed)
     }
@@ -122,9 +121,9 @@ impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3>
     #[inline]
     pub fn next_u8(&mut self) -> u8 {
         let mut x = self.0;
-        x ^= x << S1;
-        x ^= x >> S2;
-        x ^= x << S3;
+        x ^= x << SH1;
+        x ^= x >> SH2;
+        x ^= x << SH3;
         self.0 = x;
         x
     }
@@ -134,9 +133,9 @@ impl<const S1: usize, const S2: usize, const S3: usize> XorShift8Gen<S1, S2, S3>
     #[must_use]
     pub const fn next_new(&self) -> Self {
         let mut x = self.0;
-        x ^= x << S1;
-        x ^= x >> S2;
-        x ^= x << S3;
+        x ^= x << SH1;
+        x ^= x >> SH2;
+        x ^= x << SH3;
         Self(x)
     }
 }

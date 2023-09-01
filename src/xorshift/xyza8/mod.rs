@@ -6,7 +6,7 @@
 use devela::convert::{u16_into_u8_le, u32_into_u8_le};
 
 /// A simple 8-bit pseudo-random number generator with 32-bit of state,
-/// based on the XorShift algorithm.
+/// based on the *XorShift* algorithm.
 ///
 /// It has a 0.8% chance of falling into a poor quality short chain,
 /// a some degree of care is required to seed it. However, the quality of the
@@ -105,7 +105,7 @@ impl Xyza8a {
 // -----------------------------------------------------------------------------
 
 /// A simple 8-bit pseudo-random number generator with 32-bit of state,
-/// based on the XorShift algorithm.
+/// based on the *XorShift* algorithm.
 ///
 /// It has an almost optimal cycle so no real care is required
 /// for seeding except avoiding all zeros, but it fails many of the die hard
