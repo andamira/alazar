@@ -27,11 +27,16 @@ impl XorShift128 {
     #[inline]
     #[must_use]
     pub const fn new(seeds: [u32; 4]) -> Option<Self> {
-        if (seeds[0] | seeds[1] | seeds[2] | seeds[3]) != 0 {
-            Some(Self([seeds[0], seeds[1], seeds[2], seeds[3]]))
+        if (seeds[0] | seeds[1] | seeds[2] | seeds[3]) == 0 {
+            Self::cold_path_result()
         } else {
-            None
+            Some(Self([seeds[0], seeds[1], seeds[2], seeds[3]]))
         }
+    }
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
     }
 
     /// Returns a seeded `XorShift128` generator from the given 8-bit seed,
@@ -170,11 +175,16 @@ impl XorShift128p {
     #[inline]
     #[must_use]
     pub const fn new(seeds: [u64; 2]) -> Option<Self> {
-        if (seeds[0] | seeds[1]) != 0 {
-            Some(Self(seeds))
+        if (seeds[0] | seeds[1]) == 0 {
+            Self::cold_path_result()
         } else {
-            None
+            Some(Self(seeds))
         }
+    }
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
     }
 
     /// Returns a seeded `XorShift128p` generator from the given 8-bit seed,

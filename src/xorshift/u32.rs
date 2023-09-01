@@ -28,10 +28,14 @@ impl XorShift32 {
     #[must_use]
     pub const fn new(seed: u32) -> Option<Self> {
         if seed == 0 {
-            None
+            Self::cold_path_result()
         } else {
             Some(Self(seed))
         }
+    }
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
     }
 
     /// Returns a seeded `XorShift32` generator from the given 8-bit seed, unchecked.

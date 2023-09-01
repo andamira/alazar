@@ -25,10 +25,15 @@ impl XorShift8 {
     #[must_use]
     pub const fn new(seed: u8) -> Option<Self> {
         if seed == 0 {
-            None
+            Self::cold_path_result()
         } else {
             Some(Self(seed))
         }
+    }
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
     }
 
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed, unchecked.
@@ -99,10 +104,15 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
         debug_assert![SH3 > 0 && SH1 <= 7];
 
         if seed == 0 {
-            None
+            Self::cold_path_result()
         } else {
             Some(Self(seed))
         }
+    }
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
     }
 
     /// Returns a seeded `XorShift8Custom` generator from the given 8-bit seed,
