@@ -11,6 +11,12 @@
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift8(u8);
 
+impl Default for XorShift8 {
+    fn default() -> Self {
+        Self::new_unchecked(0xDE)
+    }
+}
+
 impl XorShift8 {
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed.
     ///
@@ -70,6 +76,14 @@ impl XorShift8 {
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
 pub struct XorShift8Custom<const SH1: usize = 3, const SH2: usize = 4, const SH3: usize = 2>(u8);
+
+impl<const SH1: usize, const SH2: usize, const SH3: usize> Default
+    for XorShift8Custom<SH1, SH2, SH3>
+{
+    fn default() -> Self {
+        Self::new_unchecked(0xDE)
+    }
+}
 
 impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, SH2, SH3> {
     /// Returns a seeded `XorShift8Custom` generator from the given 8-bit seed.

@@ -29,6 +29,12 @@ pub struct Xyza8a {
     a: u8,
 }
 
+impl Default for Xyza8a {
+    fn default() -> Self {
+        Self::new([0xDE, 0xFA, 0x00, 0x17])
+    }
+}
+
 impl Xyza8a {
     /// Returns a seeded `Xyza8a` generator from the given 4 × 8-bit seeds.
     #[inline]
@@ -120,6 +126,12 @@ pub struct Xyza8b {
     a: u8,
 }
 
+impl Default for Xyza8b {
+    fn default() -> Self {
+        Self::new([0xDE, 0xFA, 0x00, 0x17])
+    }
+}
+
 impl Xyza8b {
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.
     /// This is the fastest constructor.
@@ -180,8 +192,8 @@ impl Xyza8b {
     #[inline]
     pub const fn new2_16(seeds: [u16; 2]) -> Self {
         let [x, y] = u16_into_u8_le(seeds[0]);
-        let [z, a] = u16_into_u8_le(seeds[1]);
-        Self::new4_8([x, y, z, a])
+        let [z, b] = u16_into_u8_le(seeds[1]);
+        Self::new4_8([x, y, z, b])
     }
 
     /// Returns a seeded `Xyza8b` generator from the given 4 × 8-bit seeds.

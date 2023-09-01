@@ -46,6 +46,12 @@ pub struct Xabc {
     x: u8,
 }
 
+impl Default for Xabc {
+    fn default() -> Self {
+        Self::new([0xDE, 0xFA, 0x17])
+    }
+}
+
 impl Xabc {
     /// Returns a seeded `Xabc` generator from the given 3 × 8-bit seeds.
     #[inline]

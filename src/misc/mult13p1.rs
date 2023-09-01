@@ -19,6 +19,12 @@ pub struct Mult13P1 {
     state: u8,
 }
 
+impl Default for Mult13P1 {
+    fn default() -> Self {
+        Self::new(0xDE)
+    }
+}
+
 impl Mult13P1 {
     /// Returns a seeded XorShift8 generator from the given 8-bit seed.
     #[inline]

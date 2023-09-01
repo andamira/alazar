@@ -14,6 +14,12 @@ use devela::convert::{
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift128([u32; 4]);
 
+impl Default for XorShift128 {
+    fn default() -> Self {
+        Self::new_unchecked([0xDEFA0017; 4])
+    }
+}
+
 impl XorShift128 {
     /// Returns a seeded `XorShift128` generator from the given 4 × 32-bit seeds.
     ///
@@ -150,6 +156,12 @@ impl XorShift128 {
 /// [`XorShift128`].
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift128p([u64; 2]);
+
+impl Default for XorShift128p {
+    fn default() -> Self {
+        Self::new_unchecked([0xDEFA0017_DEFA0017; 2])
+    }
+}
 
 impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 2 × 64-bit seeds.

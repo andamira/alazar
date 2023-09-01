@@ -14,6 +14,12 @@ use devela::convert::u16_from_u8_le;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift16(u16);
 
+impl Default for XorShift16 {
+    fn default() -> Self {
+        Self::new_unchecked(0xDEFA)
+    }
+}
+
 impl XorShift16 {
     /// Returns a seeded `XorShift16` generator from the given 16-bit seed.
     ///

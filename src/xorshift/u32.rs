@@ -14,6 +14,12 @@ use devela::convert::{u32_from_u16_le, u32_from_u8_le};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift32(u32);
 
+impl Default for XorShift32 {
+    fn default() -> Self {
+        Self::new_unchecked(0xDEFA0017)
+    }
+}
+
 impl XorShift32 {
     /// Returns a seeded `XorShift32` generator from the given 32-bit seed.
     ///

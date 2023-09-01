@@ -14,6 +14,12 @@ use devela::convert::{u64_from_u16_le, u64_from_u32_le, u64_from_u8_le};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct XorShift64(u64);
 
+impl Default for XorShift64 {
+    fn default() -> Self {
+        Self::new_unchecked(0xDEFA0017_DEFA0017)
+    }
+}
+
 impl XorShift64 {
     /// Returns a seeded `XorShift64` generator from the given 64-bit seed.
     ///
