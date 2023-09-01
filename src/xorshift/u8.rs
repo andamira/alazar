@@ -69,10 +69,10 @@ impl XorShift8 {
 /// A version of [`XorShift8`] that allows customizing the shift values.
 ///
 /// It has an 8-bit state and generates 8-bit numbers.
-pub struct XorShift8Gen<const SH1: usize = 3, const SH2: usize = 4, const SH3: usize = 2>(u8);
+pub struct XorShift8Custom<const SH1: usize = 3, const SH2: usize = 4, const SH3: usize = 2>(u8);
 
-impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Gen<SH1, SH2, SH3> {
-    /// Returns a seeded `XorShift8Gen` generator from the given 8-bit seed.
+impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, SH2, SH3> {
+    /// Returns a seeded `XorShift8Custom` generator from the given 8-bit seed.
     ///
     /// Returns `None` if seed == `0`.
     ///
@@ -91,7 +91,7 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Gen<SH1, SH2
         }
     }
 
-    /// Returns a seeded `XorShift8Gen` generator from the given 8-bit seed,
+    /// Returns a seeded `XorShift8Custom` generator from the given 8-bit seed,
     /// unchecked.
     ///
     /// The seed must not be `0`, otherwise every result will also be `0`.

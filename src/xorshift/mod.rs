@@ -24,5 +24,5 @@ pub use u128::{XorShift128, XorShift128p};
 pub use u16::XorShift16;
 pub use u32::XorShift32;
 pub use u64::XorShift64;
-pub use u8::{XorShift8, XorShift8Gen};
+pub use u8::{XorShift8, XorShift8Custom};
 pub use xyza8::{Xyza8a, Xyza8b};
