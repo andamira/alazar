@@ -13,7 +13,24 @@ pub struct XorShift8(u8);
 
 impl Default for XorShift8 {
     fn default() -> Self {
-        Self::new_unchecked(0xDE)
+        Self::new_unchecked(Self::DEFAULT_SEED)
+    }
+}
+
+// private associated items
+impl XorShift8 {
+    const DEFAULT_SEED: u8 = 0xDE;
+
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
+    }
+    #[cold]
+    #[inline]
+    #[allow(dead_code)]
+    const fn cold_path_default() -> Self {
+        Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
 
@@ -29,11 +46,6 @@ impl XorShift8 {
         } else {
             Some(Self(seed))
         }
-    }
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
     }
 
     /// Returns a seeded `XorShift8` generator from the given 8-bit seed, unchecked.
@@ -86,7 +98,25 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> Default
     for XorShift8Custom<SH1, SH2, SH3>
 {
     fn default() -> Self {
-        Self::new_unchecked(0xDE)
+        Self::new_unchecked(Self::DEFAULT_SEED)
+    }
+}
+
+// private associated items
+impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, SH2, SH3> {
+    const DEFAULT_SEED: u8 = 0xDE;
+
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
+    }
+
+    #[cold]
+    #[inline]
+    #[allow(dead_code)]
+    const fn cold_path_default() -> Self {
+        Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
 
@@ -108,11 +138,6 @@ impl<const SH1: usize, const SH2: usize, const SH3: usize> XorShift8Custom<SH1, 
         } else {
             Some(Self(seed))
         }
-    }
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
     }
 
     /// Returns a seeded `XorShift8Custom` generator from the given 8-bit seed,

@@ -16,7 +16,25 @@ pub struct XorShift128([u32; 4]);
 
 impl Default for XorShift128 {
     fn default() -> Self {
-        Self::new_unchecked([0xDEFA0017; 4])
+        Self::new_unchecked(Self::DEFAULT_SEED)
+    }
+}
+
+// private associated items
+impl XorShift128 {
+    const DEFAULT_SEED: [u32; 4] = [0xDEFA0017; 4];
+
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
+    }
+
+    #[cold]
+    #[inline]
+    #[allow(dead_code)]
+    const fn cold_path_default() -> Self {
+        Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
 
@@ -32,11 +50,6 @@ impl XorShift128 {
         } else {
             Some(Self([seeds[0], seeds[1], seeds[2], seeds[3]]))
         }
-    }
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
     }
 
     /// Returns a seeded `XorShift128` generator from the given 8-bit seed,
@@ -168,6 +181,24 @@ impl Default for XorShift128p {
     }
 }
 
+// private associated items
+impl XorShift128p {
+    const DEFAULT_SEED: [u64; 2] = [0xDEFA0017_DEFA0017; 2];
+
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
+    }
+
+    #[cold]
+    #[inline]
+    #[allow(dead_code)]
+    const fn cold_path_default() -> Self {
+        Self::new_unchecked(Self::DEFAULT_SEED)
+    }
+}
+
 impl XorShift128p {
     /// Returns a seeded `XorShift128+` generator from the given 2 × 64-bit seeds.
     ///
@@ -180,11 +211,6 @@ impl XorShift128p {
         } else {
             Some(Self(seeds))
         }
-    }
-    #[cold]
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
     }
 
     /// Returns a seeded `XorShift128p` generator from the given 8-bit seed,

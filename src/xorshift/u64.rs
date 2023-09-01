@@ -16,7 +16,25 @@ pub struct XorShift64(u64);
 
 impl Default for XorShift64 {
     fn default() -> Self {
-        Self::new_unchecked(0xDEFA0017_DEFA0017)
+        Self::new_unchecked(Self::DEFAULT_SEED)
+    }
+}
+
+// private associated items
+impl XorShift64 {
+    const DEFAULT_SEED: u64 = 0xDEFA0017_DEFA0017;
+
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
+    }
+
+    #[cold]
+    #[inline]
+    #[allow(dead_code)]
+    const fn cold_path_default() -> Self {
+        Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
 
@@ -32,10 +50,6 @@ impl XorShift64 {
         } else {
             Some(Self(seed))
         }
-    }
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
     }
 
     /// Returns a seeded `XorShift64` generator from the given 8-bit seed, unchecked.

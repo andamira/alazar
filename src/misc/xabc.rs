@@ -48,8 +48,13 @@ pub struct Xabc {
 
 impl Default for Xabc {
     fn default() -> Self {
-        Self::new([0xDE, 0xFA, 0x17])
+        Self::new(Self::DEFAULT_SEED)
     }
+}
+
+// private associated items
+impl Xabc {
+    const DEFAULT_SEED: [u8; 3] = [0xDE, 0xFA, 0x17];
 }
 
 impl Xabc {

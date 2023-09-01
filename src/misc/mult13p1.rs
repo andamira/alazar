@@ -21,8 +21,13 @@ pub struct Mult13P1 {
 
 impl Default for Mult13P1 {
     fn default() -> Self {
-        Self::new(0xDE)
+        Self::new(Self::DEFAULT_SEED)
     }
+}
+
+// private associated items
+impl Mult13P1 {
+    const DEFAULT_SEED: u8 = 0xDE;
 }
 
 impl Mult13P1 {

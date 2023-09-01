@@ -16,7 +16,25 @@ pub struct XorShift16(u16);
 
 impl Default for XorShift16 {
     fn default() -> Self {
-        Self::new_unchecked(0xDEFA)
+        Self::new_unchecked(Self::DEFAULT_SEED)
+    }
+}
+
+// private associated items
+impl XorShift16 {
+    const DEFAULT_SEED: u16 = 0xDEFA;
+
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
+    }
+
+    #[cold]
+    #[inline]
+    #[allow(dead_code)]
+    const fn cold_path_default() -> Self {
+        Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
 
@@ -32,10 +50,6 @@ impl XorShift16 {
         } else {
             Some(Self(seed))
         }
-    }
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
     }
 
     /// Returns a seeded `XorShift16` generator from the given 8-bit seed, unchecked.

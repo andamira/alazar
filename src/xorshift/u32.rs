@@ -16,7 +16,25 @@ pub struct XorShift32(u32);
 
 impl Default for XorShift32 {
     fn default() -> Self {
-        Self::new_unchecked(0xDEFA0017)
+        Self::new_unchecked(Self::DEFAULT_SEED)
+    }
+}
+
+// private associated items
+impl XorShift32 {
+    const DEFAULT_SEED: u32 = 0xDEFA0017;
+
+    #[cold]
+    #[inline]
+    const fn cold_path_result() -> Option<Self> {
+        None
+    }
+
+    #[cold]
+    #[inline]
+    #[allow(dead_code)]
+    const fn cold_path_default() -> Self {
+        Self::new_unchecked(Self::DEFAULT_SEED)
     }
 }
 
@@ -32,10 +50,6 @@ impl XorShift32 {
         } else {
             Some(Self(seed))
         }
-    }
-    #[inline]
-    const fn cold_path_result() -> Option<Self> {
-        None
     }
 
     /// Returns a seeded `XorShift32` generator from the given 8-bit seed, unchecked.

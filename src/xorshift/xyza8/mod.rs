@@ -31,8 +31,13 @@ pub struct Xyza8a {
 
 impl Default for Xyza8a {
     fn default() -> Self {
-        Self::new([0xDE, 0xFA, 0x00, 0x17])
+        Self::new(Self::DEFAULT_SEED)
     }
+}
+
+// private associated items
+impl Xyza8a {
+    const DEFAULT_SEED: [u8; 4] = [0xDE, 0xFA, 0x00, 0x17];
 }
 
 impl Xyza8a {
@@ -128,8 +133,13 @@ pub struct Xyza8b {
 
 impl Default for Xyza8b {
     fn default() -> Self {
-        Self::new([0xDE, 0xFA, 0x00, 0x17])
+        Self::new(Self::DEFAULT_SEED)
     }
+}
+
+// private associated items
+impl Xyza8b {
+    const DEFAULT_SEED: [u8; 4] = [0xDE, 0xFA, 0x00, 0x17];
 }
 
 impl Xyza8b {
