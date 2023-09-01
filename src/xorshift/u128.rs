@@ -47,6 +47,7 @@ impl XorShift128 {
         s ^= s << 11;
         s ^= s >> 8;
         self.0[0] = s ^ t ^ (t >> 19);
+
         ((self.0[0] as u64) << 32) | (self.0[1] as u64)
     }
 
@@ -55,6 +56,7 @@ impl XorShift128 {
     #[must_use]
     pub const fn next_new(&self) -> Self {
         let mut x = self.0;
+
         let t = x[3];
         let mut s = x[0];
         x[3] = x[2];
@@ -63,6 +65,7 @@ impl XorShift128 {
         s ^= s << 11;
         s ^= s >> 8;
         x[0] = s ^ t ^ (t >> 19);
+
         Self(x)
     }
 }
@@ -149,19 +152,20 @@ impl XorShift128p {
     #[inline(always)]
     #[must_use]
     pub const fn current_u64(&self) -> u64 {
-        self.0[0] + self.0[1]
+        self.0[0].wrapping_add(self.0[1])
     }
 
     /// Returns the next random `u64`.
     #[inline]
     #[must_use]
     pub fn next_64(&mut self) -> u64 {
-        let mut s1 = self.0[0];
-        let s0 = self.0[1];
-        let result = s0 + s1;
+        let [s0, mut s1] = [self.0[0], self.0[1]];
+        let result = s0.wrapping_add(s1);
+
         s1 ^= s0;
-        self.0[0] = s0.rotate_left(24) ^ s1 ^ (s1 << 16); // a, b
-        self.0[1] = s1.rotate_left(37); // c
+        self.0[0] = s0.rotate_left(55) ^ s1 ^ (s1 << 14); // a, b
+        self.0[1] = s1.rotate_left(36); // c
+
         result
     }
 
@@ -170,11 +174,12 @@ impl XorShift128p {
     #[must_use]
     pub const fn next_new(&self) -> Self {
         let mut x = self.0;
-        let mut s1 = x[0];
-        let s0 = x[1];
+        let [s0, mut s1] = [x[0], x[1]];
+
         s1 ^= s0;
-        x[0] = s0.rotate_left(24) ^ s1 ^ (s1 << 16); // a, b
-        x[1] = s1.rotate_left(37); // c
+        x[0] = s0.rotate_left(55) ^ s1 ^ (s1 << 14); // a, b
+        x[1] = s1.rotate_left(36); // c
+
         Self(x)
     }
 }
