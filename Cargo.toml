@@ -17,7 +17,7 @@ include = [
 ]
 categories = ["algorithms", "embedded", "no-std::no-alloc"]
 keywords = ["rand", "random", "rng", "prng"]
-publish = false
+publish = true
 
 # ------------------------------------------------------------------------------
 
