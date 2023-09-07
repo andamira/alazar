@@ -98,7 +98,7 @@ impl Xabc {
     #[must_use]
     pub fn next_u8(&mut self) -> u8 {
         // x is incremented every round and is not affected by any other variable
-        self.x += 1;
+        self.x = self.x.wrapping_add(1);
         // note the mix of addition and XOR
         self.a = self.a ^ self.c ^ self.x;
         // And the use of very few instructions

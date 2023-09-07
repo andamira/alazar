@@ -53,7 +53,10 @@ impl Mult13P1 {
         let n_times_2_pow_2 = n << 2;
         let n_times_2_pow_3 = n << 3;
         // 13*n = n + n*2^2 + n*2^3
-        self.state = n + n_times_2_pow_2 + n_times_2_pow_3 + 1;
+        self.state = n
+            .wrapping_add(n_times_2_pow_2)
+            .wrapping_add(n_times_2_pow_3)
+            .wrapping_add(1);
         self.state
     }
 
