@@ -22,31 +22,35 @@ publish = true
 # ------------------------------------------------------------------------------
 
 [features]
-default = ["std"]
+
+#* capability features *#
+default = []
+full = [ # enables optional capabilities in this crate
+	"rand_core"
+]
 
 #* environment features *#
-# (not enabling "std" declares the library as "no_std")
-std = [ # enables functionality that depend on the standard library
+std = [ # disables `no_std` mode and enables `std` functionality
 	"alloc",
 	"rand_core?/std",
 ]
-alloc = [ # enables functionality that depend on allocation
-	"rand_core?/alloc",
+alloc = [ # enables `alloc` functionality
+	"rand_core?/alloc"
 ]
-no_std = [] # enables functionality incompatible with the standard library (unused)
+no_std = [] # enables functionality incompatible with `std` (unused)
 
 #* safety features *#
-safe = [] # forbids unsafe at the crate level
-safest = ["safe", "devela/safest"] # forbids unsafe recursively
-unsafe = [] # enables unsafe at the crate level (unused)
 unsafest = ["unsafe", "devela/unsafest"] # enables unsafe recursively
+unsafe = [] # enables unsafe features in this crate (unused)
+safe = [] # forbids unsafe in this crate
+safest = ["safe", "devela/safest"] # forbids unsafe recursively
 
 #* nightly features *#
-nightly = [] # enables the nightly features
-nightly_docs = ["nightly", "std", "rand_core"] # features for docs.rs
+nightly = [] # enables nightly features
+nightly_docs = ["nightly", "std", "rand_core"] # enables features for docs.rs
 
-#* other features *#
-all = ["rand_core"]
+#* deprecated features *#
+all = ["full"] # since 0.0.2
 
 # ------------------------------------------------------------------------------
 

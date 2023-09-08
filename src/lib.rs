@@ -17,6 +17,8 @@ extern crate alloc;
 compile_error!("You can't enable the `std` and `no_std` features at the same time.");
 #[cfg(all(feature = "safe", feature = "unsafe"))]
 compile_error!("You can't enable the `safe` and `unsafe` features at the same time.");
+// deprecated
+devela::deprecate_feature![old: "all", new: "full", since: "0.0.2"];
 
 pub mod misc;
 pub mod xorshift;
