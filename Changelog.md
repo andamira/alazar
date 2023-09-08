@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Changed
+- remove `std` from default features.
+- deprecate and rename `all` to `full`.
+- update `devela` to `0.9.0`.
+
+### Fixed
+- fix misc. prngs overflow.
+- refactor manifest.
+
 ## [0.0.1] - 2023-09-01
 
 ### Added
